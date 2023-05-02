@@ -1,23 +1,21 @@
-const { name }  = require("../package.json");
-
-
-
 module.exports = async (fastify, options) => {
 
-	// ***********************************************************
+	//////////////////////
 	// Rutas
-	// ***********************************************************
+	//////////////////////
 
+	// Creamos la primera ruta, la cual es una prueba para ver si funciona todo
 	fastify.route({
 		url: "/prueba",
 		method: 'GET',
 		handler: (req, res) => {
-			console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 			return res.code(200).send({
                 ok: true,
-                list: "YES"
+                list: "Funciona"
             });
 		}
 	})
+
+	require('./login/login')(fastify);
 
 };
