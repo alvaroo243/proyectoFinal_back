@@ -1,3 +1,5 @@
+const {ObjectId} = require('mongodb')
+
 module.exports.mongoInit = async () => {
 	
 	// Importamos MongoClient de mongodb
@@ -6,6 +8,7 @@ module.exports.mongoInit = async () => {
 	const dbUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 	
 	try {
+		// Lo siguiente que vamos a hacer es parecido a un script de MySql
 		
 		// Creamos una variable con el cliente de nuetro MongoDb
 		const client = new MongoClient(dbUrl);
@@ -13,24 +16,31 @@ module.exports.mongoInit = async () => {
 		// Creamos la conexion con la base de datos
 		const conexion = await client.connect();
 		
-		// Cogemos la BBDD
+		// Cogemos la db si no existe la crea
 		const minijuegos = conexion.db("minijuegos");
 		
 		if (minijuegos) {
 			console.log("		🟢 MongoDB");
 			console.log( "" );
+
+			global.mongo = {
+				conexion: conexion,
+				ObjectId: ObjectId,
+				minijuegos: minijuegos
+			}
 		};
 
-		const usuarios = minijuegos.collection('usuarios');
-		const numUsuarios = await usuarios.countDocuments()
+		// Cogemos un array con las collection de la db
+		const collections = await minijuegos.collections() 
 
-		if (numUsuarios === 0) {
-			console.log( "NO EXISTE" );
-			usuarios.aggregate()
-		} else {
-			console.log( "EXISTE" );
+		// Si no hay ninguna collection le añadimos las por defecto
+		if (collections.length === 0) {
+			// Creamos las collections que tendra la db
+			minijuegos.createCollection('puntuaciones')
+			const usuarios = minijuegos.collection('usuarios')
+			// Añadimos valores por defecto de las collections
+			await usuarios.insertOne({email: "admin@gmail.com", password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K"})
 		}
-		
 	} catch (err) {
 		console.log( err );
 		console.log("		🔴 MongoDB error");
