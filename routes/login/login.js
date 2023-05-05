@@ -20,8 +20,7 @@ module.exports = (fastify) => {
         method: "GET",
         url: "/usuario",
         handler: async (req, res) => {
-            const { user } = req.user
-
+            const user  = req.user
             return res.code(200).send({user})
         }
     })

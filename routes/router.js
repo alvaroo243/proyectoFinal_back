@@ -28,6 +28,7 @@ module.exports = async (fastify, options) => {
 		url: "/prueba",
 		method: 'GET',
 		handler: (req, res) => {
+			console.log( req.user );
 			return res.code(200).send({
                 ok: true,
                 list: "Funciona"
