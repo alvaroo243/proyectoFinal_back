@@ -19,6 +19,7 @@ module.exports = (fastify) => {
     fastify.route({
         method: "GET",
         url: "/usuario",
+        preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
             const user  = req.user
             return res.code(200).send({user})
