@@ -1,15 +1,14 @@
 const bcrypt = require('bcryptjs');
-const { generarContrasena } = require('../../utils/generador');
 
 const usuarios = global.mongo.minijuegos.collection('usuarios');
 
 const loginUsuario = async ({email, password, res}) => {
     const usuario = await buscarUsuario({email})
-    let message = "Login correcto";
+    if(!usuario) return {message: "Email incorrecto"}
 
     const correctPassword = bcrypt.compareSync(password, usuario.password)
 
-    if(!correctPassword) message = "Contraseña incorrecta"
+    if(!correctPassword) return {message: "Contraseña incorrecta"}
 
     delete usuario.password
 
@@ -23,12 +22,12 @@ const loginUsuario = async ({email, password, res}) => {
         }
     )
 
-    if(!token) message = "No se ha podido generar el token"
+    if(!token) return {message: "No se ha podido generar el token"}
 
     return {
         usuario: usuario,
         token: token,
-        message: message
+        message: "Login correcto"
     }
 };
 exports.loginUsuario = loginUsuario;

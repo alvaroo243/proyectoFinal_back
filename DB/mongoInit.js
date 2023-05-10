@@ -39,7 +39,14 @@ module.exports.mongoInit = async () => {
 			minijuegos.createCollection('puntuaciones')
 			const usuarios = minijuegos.collection('usuarios')
 			// Añadimos valores por defecto de las collections
-			await usuarios.insertOne({email: "admin@gmail.com", password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K"})
+			await usuarios.insertOne({
+				name: "Admin", 
+				username: "admin", 
+				email: "admin@gmail.com", 
+				password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K", // Contraseña de admin es admin
+				creado: "Indefinido",
+				role: "ADMIN"
+			}) 
 		}
 	} catch (err) {
 		console.log( err );

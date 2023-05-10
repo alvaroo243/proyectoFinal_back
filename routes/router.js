@@ -36,5 +36,7 @@ module.exports = async (fastify, options) => {
 	})
 
 	require('./login/login')(fastify);
+	require('./registro/registro')(fastify);
+	require('./usuarios/usuarios')(fastify)
 
 };
