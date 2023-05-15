@@ -44,13 +44,14 @@ module.exports.mongoInit = async () => {
 				username: "admin", 
 				email: "admin@gmail.com", 
 				password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K", // Contraseña de admin es admin
-				creado: "Indefinido",
-				role: "ADMIN"
+				creado: NaN,
+				role: "ADMIN",
+				biografia: "Soy el admin"
 			}) 
 		}
 	} catch (err) {
 		console.log( err );
 		console.log("		🔴 MongoDB error");
-	};	
+	};
 	
 };

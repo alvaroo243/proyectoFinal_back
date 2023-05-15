@@ -418,3 +418,28 @@ const separaArray = (array, cantidadPorGrupo = 1) => {
 	return arraysSeparados;
 };
 exports.separaArray = separaArray;
+
+const generaPaginacion = ({
+    paginacion = {
+        paginaActual: 1,
+        tamanoPorPagina: 10,
+    },
+    defaultOrden = {
+        order: "ascend",
+        sorterId: "_id",
+    },
+    tipo = 'mongo' // [mongo, sql]
+}) => {
+    if (paginacion && !paginacion.orden) paginacion.orden = defaultOrden;
+    const pagina = paginacion.paginaActual - 1;
+    const skip = (paginacion.tamanoPorPagina * pagina) ? paginacion.tamanoPorPagina * pagina : 0;
+    const limit = (paginacion.tamanoPorPagina) ? paginacion.tamanoPorPagina : 0;
+    const sort = { [paginacion?.orden?.sorterId]: (paginacion?.orden?.order === 'descend' ? -1 : 1) };
+
+    return {
+        skip,
+        limit,
+        sort
+    }
+}
+exports.generaPaginacion = generaPaginacion;

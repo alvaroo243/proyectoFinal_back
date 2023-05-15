@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { encuentraUsuario } = require('../usuarios/usuarios');
 
 const usuarios = global.mongo.minijuegos.collection('usuarios');
 
@@ -8,9 +9,9 @@ const hacerRegistro = async ({
 
     const {username, email, password} = registro
 
-    const existeUsuario = await encuentraUsuario({username, email})
+    const {existe, error} = await encuentraUsuario({username, email})
 
-    if (existeUsuario) return {ok: false, message: "¡El usuario ya existe!"}
+    if (existe) return {ok: false, message: error}
 
     const encryptedPass = await bcrypt.hash(password, 10)
 
@@ -26,21 +27,6 @@ const hacerRegistro = async ({
     }
 };
 exports.hacerRegistro = hacerRegistro;
-
-
-const encuentraUsuario = async ({
-    username,
-    email
-}) => {
-    const usernameCount = await usuarios.find({username: username}).count()
-    const emailCount = await usuarios.find({email: email}).count()
-    if (usernameCount > 0) return true
-    if (emailCount > 0) return true
-
-    return false
-};
-exports.encuentraUsuario = encuentraUsuario;
-
 
 const crearUsuario = async ({
     registro

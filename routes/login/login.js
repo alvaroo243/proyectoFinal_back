@@ -5,8 +5,8 @@ module.exports = (fastify) => {
         method: "POST",
         url: "/login",
         handler: async (req, res) => {
-            const {email, password} = req.body
-            const {usuario, token, message} = await loginUsuario({email, password, res})
+            const {email, username, password} = req.body
+            const {usuario, token, message} = await loginUsuario({email, username, password, res})
 
             return res.code(200).send({
                 ...usuario,

@@ -2,9 +2,9 @@ const bcrypt = require('bcryptjs');
 
 const usuarios = global.mongo.minijuegos.collection('usuarios');
 
-const loginUsuario = async ({email, password, res}) => {
-    const usuario = await buscarUsuario({email})
-    if(!usuario) return {message: "Email incorrecto"}
+const loginUsuario = async ({email, username, password, res}) => {
+    const usuario = await buscarUsuario({email, username})
+    if(!usuario) return {message: "Email o username incorrecto"}
 
     const correctPassword = bcrypt.compareSync(password, usuario.password)
 
@@ -34,9 +34,15 @@ exports.loginUsuario = loginUsuario;
 
 
 const buscarUsuario = async ({
-    email
+    email,
+    username
 }) => {
-    const usuarioEncontrado = await usuarios.findOne({"email": email})
+    let usuarioEncontrado
+    if (username) {
+        usuarioEncontrado = await usuarios.findOne({"username": username})
+    } else {
+        usuarioEncontrado = await usuarios.findOne({"email": email})
+    }
     return usuarioEncontrado
 };
 exports.buscarUsuario = buscarUsuario;
