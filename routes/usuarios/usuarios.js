@@ -68,10 +68,11 @@ module.exports = (fastify) => {
         preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
             const {usuarioEditado} = req.body;
-            const {ok} = await editarUsuario({usuarioEditado})
+            const {ok, token} = await editarUsuario({usuarioEditado, res})
 
             res.code(200).send({
-                ok: ok
+                ok: ok,
+                token: token
             })
         }
     })
@@ -84,9 +85,9 @@ module.exports = (fastify) => {
             const {username, email} = req.body
             const {username: usernameUsuario, email: emailUsuario} = req.user
 
-            const existe = encuentraUsuario({username, email, usernameUsuario, emailUsuario})
+            const validacion = encuentraUsuario({username, email, usernameUsuario, emailUsuario})
 
-            return existe
+            return validacion
         }
     })
 }

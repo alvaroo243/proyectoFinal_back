@@ -76,9 +76,19 @@ exports.getUsuariosBusqueda = getUsuariosBusqueda;
 
 
 const editarUsuario = async ({
-    usuarioEditado
+    usuarioEditado,
+    res
 }) => {
     const { _id } = usuarioEditado
+    const token = await res.jwtSign(
+        {
+            ...usuarioEditado
+        }, 
+        {
+            expiresIn: "12h"
+        }
+    )
+    if (!token) return {ok: false}
     delete usuarioEditado._id
 
     const editar = await usuarios
@@ -87,7 +97,8 @@ const editarUsuario = async ({
     if (!editar) return {ok: false}
 
     return {
-        ok: true
+        ok: true,
+        token: token
     }
 };
 exports.editarUsuario = editarUsuario;
