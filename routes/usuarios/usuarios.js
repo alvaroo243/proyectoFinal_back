@@ -52,8 +52,8 @@ module.exports = (fastify) => {
         method: "POST",
         preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
-            const {filtros} = req.body;
-            const {ok, list} = await getUsuariosBusqueda({filtros})
+            const {filtros, paginacion} = req.body;
+            const {ok, list} = await getUsuariosBusqueda({filtros, paginacion})
 
             return res.code(200).send({
                 ok: ok,

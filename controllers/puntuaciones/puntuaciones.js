@@ -1,3 +1,5 @@
+const { generaPaginacion } = require("../../utils/generador");
+
 const puntuaciones = global.mongo.minijuegos.collection('puntuaciones');
 
 const actualizarPuntuacionTresEnRaya = async ({
@@ -5,24 +7,50 @@ const actualizarPuntuacionTresEnRaya = async ({
     username
 }) => {
 
-    const {tresEnRaya} = await puntuaciones
+    const puntuacionJugador = await puntuaciones
     .findOne({"username": username})
 
-    if (!tresEnRaya) {
+    if (!puntuacionJugador || puntuacionJugador.tresEnRaya === undefined) {
         puntuaciones
-        .insertOne({"username": username, "tresEnRaya": {"puntuacion": puntuacion}})
+        .insertOne({"username": username, "tresEnRaya":  puntuacion})
         return {
             ok: true
         }
     }
+
+    const tresEnRaya = puntuacionJugador.tresEnRaya
     
-    if (tresEnRaya.puntuacion > puntuacion) return {ok: false}
+    if (tresEnRaya >= puntuacion) return {ok: false}
 
     puntuaciones
-    .updateOne({"username": username}, {$set: {"tresEnRaya": {"puntuacion": puntuacion}}})
+    .updateOne({"username": username}, {$set: {"tresEnRaya": puntuacion}})
 
     return {
         ok: true
     }
 };
 exports.actualizarPuntuacionTresEnRaya = actualizarPuntuacionTresEnRaya;
+
+const defaultOrdenTresEnRaya = {
+    order: "descend",
+    sorterId: "tresEnRaya"
+}
+
+const getPuntuacionesTresEnRaya = async ({
+    filtros, 
+    paginacion
+}) => {
+    const {skip, limit, sort} = generaPaginacion({paginacion, defaultOrden: defaultOrdenTresEnRaya })
+    const jugadoresConPuntuaciones = await puntuaciones
+    .find({"tresEnRaya": {$exists: true}})
+    .skip(skip)
+    .limit(limit)
+    .sort(sort)
+    .toArray()
+
+    return {
+        ok: true, 
+        list: jugadoresConPuntuaciones
+    }
+};
+exports.getPuntuacionesTresEnRaya = getPuntuacionesTresEnRaya;

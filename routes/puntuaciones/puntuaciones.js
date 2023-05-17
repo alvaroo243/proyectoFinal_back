@@ -1,4 +1,4 @@
-const { actualizarPuntuacionTresEnRaya } = require("../../controllers/puntuaciones/puntuaciones")
+const { actualizarPuntuacionTresEnRaya, getPuntuacionesTresEnRaya } = require("../../controllers/puntuaciones/puntuaciones")
 
 module.exports = (fastify) => {
 
@@ -13,6 +13,21 @@ module.exports = (fastify) => {
 
             return res.code(200).send({
                 ok: ok
+            })
+        }
+    })
+
+    fastify.route({
+        url:"/puntuaciones/getTresEnRaya",
+        method: "POST",
+        preValidation: [fastify.checkJwt],
+        handler: async (req, res) => {
+            const {filtros, paginacion} = req.body
+            const {ok, list} = await getPuntuacionesTresEnRaya({filtros, paginacion})
+
+            return res.code(200).send({
+                ok: ok,
+                list: list
             })
         }
     })

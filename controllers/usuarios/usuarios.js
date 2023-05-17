@@ -60,12 +60,16 @@ const eliminarUsuario = async ({
 };
 exports.eliminarUsuario = eliminarUsuario;
 
-
 const getUsuariosBusqueda = async ({
-    filtros
+    filtros,
+    paginacion
 }) => {
+    const { skip, limit, sort } = generaPaginacion({ paginacion })
     const list = await usuarios
         .find({ ...filtros }, { "projection": { "password": 0, "email": 0, "role": 0 } })
+        .skip(skip)
+        .limit(limit)
+        .sort(sort)
         .toArray()
     return {
         ok: true,
