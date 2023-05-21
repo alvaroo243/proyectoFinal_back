@@ -1,4 +1,4 @@
-const { actualizarPuntuacionTresEnRaya, getPuntuacionesTresEnRaya } = require("../../controllers/puntuaciones/puntuaciones")
+const { actualizarPuntuacionTresEnRaya, getPuntuacionesTresEnRaya, getPuntuacionesJugador } = require("../../controllers/puntuaciones/puntuaciones")
 
 module.exports = (fastify) => {
 
@@ -29,6 +29,19 @@ module.exports = (fastify) => {
                 ok: ok,
                 list: list
             })
+        }
+    })
+
+    fastify.route({
+        url:"/puntuaciones",
+        method: "POST",
+        preValidation: [fastify.checkJwt],
+        handler: async (req, res) => {
+            const {username} = req.body
+            
+            const puntuacionesJugador = await getPuntuacionesJugador({username})
+
+            return puntuacionesJugador
         }
     })
 }

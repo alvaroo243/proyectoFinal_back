@@ -54,3 +54,14 @@ const getPuntuacionesTresEnRaya = async ({
     }
 };
 exports.getPuntuacionesTresEnRaya = getPuntuacionesTresEnRaya;
+
+const getPuntuacionesJugador = async ({
+    username
+}) => {
+    
+    const puntuacionesJugador= await puntuaciones
+    .findOne({username: username}, {"projection": {"_id": 0, "username": 0}})
+
+    return puntuacionesJugador
+};
+exports.getPuntuacionesJugador = getPuntuacionesJugador;
