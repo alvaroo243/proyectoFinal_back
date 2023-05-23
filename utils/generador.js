@@ -427,8 +427,7 @@ const generaPaginacion = ({
     defaultOrden = {
         order: "ascend",
         sorterId: "_id",
-    },
-    tipo = 'mongo' // [mongo, sql]
+    }
 }) => {
     if (paginacion && !paginacion.orden) paginacion.orden = defaultOrden;
     const pagina = paginacion.paginaActual - 1;
