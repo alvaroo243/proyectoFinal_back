@@ -8,11 +8,11 @@ module.exports = (fastify) => {
             const {email, username, password} = req.body
             const {usuario, token, message} = await loginUsuario({email, username, password, res})
 
-            return res.code(200).send({
+            return {
                 ...usuario,
                 token,
                 message
-            })
+            }
         }
     })
 
