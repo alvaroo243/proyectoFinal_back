@@ -16,6 +16,8 @@ const path = require("path");
 // Modulo con metodos los cuales se utilizan para interactuar con archivos del sistema
 const fs = require("fs");
 
+const cors = require("cors");
+
 
 ////////////////////
 // ENV
@@ -45,6 +47,8 @@ if (fs.existsSync(rutaEnv)) {
 ////////////////////
 // Fastify
 ////////////////////
+
+fastify.register(cors({origin: true}));
 
 // Cogemos el puerto de la variable del env, si existe
 const port = process.env.PORT || 3000;
