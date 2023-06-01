@@ -61,13 +61,7 @@ const host = process.env.HOST || 'localhost';
 	// Y configuramos los accesos que tendra
 	fastify.register(require("@fastify/cors"), {
 		origin: "*",
-		methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
-		allowedHeaders: [
-			{ "key": "Access-Control-Allow-Credentials", "value": "true" },
-			{ "key": "Access-Control-Allow-Origin", "value": "*" },
-			{ "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-			{ "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
-		  ]
+		methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"]
 	});
 	
 	// Funcion para iniciar fastify
