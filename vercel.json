@@ -1,7 +1,6 @@
 {
     "version": 2,
     "headers": [{
-        "source": "./index.js",
         "headers": [{
                 "key": "Access-Control-Allow-Credentials",
                 "value": "true"
