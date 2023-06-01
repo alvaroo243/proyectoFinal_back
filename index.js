@@ -16,8 +16,6 @@ const path = require("path");
 // Modulo con metodos los cuales se utilizan para interactuar con archivos del sistema
 const fs = require("fs");
 
-const cors = require("cors");
-
 
 ////////////////////
 // ENV
@@ -48,6 +46,8 @@ if (fs.existsSync(rutaEnv)) {
 // Fastify
 ////////////////////
 
+
+
 // Cogemos el puerto de la variable del env, si existe
 const port = process.env.PORT || 3000;
 // Lo mismo con el host
@@ -56,15 +56,14 @@ const host = process.env.HOST || 'localhost';
 // Funcion auto llamada
 (async() => {
 	
+	// Configuramos fastify para que se fije en el archivo router en el cual tendremos todas las rutas
+	fastify.register(require("./routes/router"));
+	// Y configuramos los accesos que tendra
 	fastify.register(require("@fastify/cors"), {
 		origin: "*",
 		methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
 		allowedHeaders: "*"
 	});
-	// Configuramos fastify para que se fije en el archivo router en el cual tendremos todas las rutas
-	fastify.register(require("./routes/router"));
-	// Y configuramos los accesos que tendra
-	
 	
 	// Funcion para iniciar fastify
 	const start = async () => {
