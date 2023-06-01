@@ -67,7 +67,7 @@ const host = process.env.HOST || 'localhost';
 	// Funcion para iniciar fastify
 	const start = async () => {
 		try {
-			await fastify.listen(port,host)
+			await fastify.listen({port,host})
 		} catch (err) {
 			fastify.log.error(err)
 			process.exit(1)
