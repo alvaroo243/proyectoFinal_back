@@ -60,6 +60,7 @@ const host = process.env.HOST || 'localhost';
 	fastify.register(require("@fastify/cors"), {
 		origin: "*",
 		methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
+		allowedHeaders: "*"
 	});
 	
 	// Funcion para iniciar fastify
