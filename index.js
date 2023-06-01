@@ -48,8 +48,6 @@ if (fs.existsSync(rutaEnv)) {
 // Fastify
 ////////////////////
 
-fastify.register(cors({origin: true}));
-
 // Cogemos el puerto de la variable del env, si existe
 const port = process.env.PORT || 3000;
 // Lo mismo con el host
@@ -58,14 +56,15 @@ const host = process.env.HOST || 'localhost';
 // Funcion auto llamada
 (async() => {
 	
-	// Configuramos fastify para que se fije en el archivo router en el cual tendremos todas las rutas
-	fastify.register(require("./routes/router"));
-	// Y configuramos los accesos que tendra
 	fastify.register(require("@fastify/cors"), {
 		origin: "*",
 		methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
 		allowedHeaders: "*"
 	});
+	// Configuramos fastify para que se fije en el archivo router en el cual tendremos todas las rutas
+	fastify.register(require("./routes/router"));
+	// Y configuramos los accesos que tendra
+	
 	
 	// Funcion para iniciar fastify
 	const start = async () => {
