@@ -51,7 +51,7 @@ if (fs.existsSync(rutaEnv)) {
 // Cogemos el puerto de la variable del env, si existe
 const port = process.env.PORT || 3000;
 // Lo mismo con el host
-const host = process.env.HOST || 'localhost';
+const host = process.env.HOST || '0.0.0.0';
 
 // Funcion auto llamada
 (async() => {
@@ -67,7 +67,7 @@ const host = process.env.HOST || 'localhost';
 	// Funcion para iniciar fastify
 	const start = async () => {
 		try {
-			await fastify.listen({port,host})
+			fastify.listen({port,host})
 		} catch (err) {
 			fastify.log.error(err)
 			process.exit(1)

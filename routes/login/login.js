@@ -5,7 +5,6 @@ module.exports = (fastify) => {
         method: "POST",
         url: "/login",
         handler: async (req, res) => {
-            res.header('Access-Control-Allow-Origin', '*');
             const {email, username, password} = req.body
             const {usuario, token, message} = await loginUsuario({email, username, password, res})
 
