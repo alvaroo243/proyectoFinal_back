@@ -10,7 +10,7 @@ const actualizarPuntuacionTresEnRaya = async ({
     const puntuacionJugador = await puntuaciones
         .findOne({ "username": username })
 
-    if (!puntuacionJugador || puntuacionJugador.tresEnRaya === undefined) {
+    if (!puntuacionJugador) {
         puntuaciones
             .insertOne({ "username": username, "tresEnRaya": puntuacion })
         return {
@@ -20,7 +20,7 @@ const actualizarPuntuacionTresEnRaya = async ({
 
     const tresEnRaya = puntuacionJugador.tresEnRaya
 
-    if (tresEnRaya >= puntuacion) return { ok: false }
+    if(tresEnRaya && tresEnRaya >= puntuacion) return {ok: false};
 
     puntuaciones
         .updateOne({ "username": username }, { $set: { "tresEnRaya": puntuacion } })

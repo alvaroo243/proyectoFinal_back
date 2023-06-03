@@ -39,9 +39,9 @@ const buscarUsuario = async ({
 }) => {
     let usuarioEncontrado
     if (username) {
-        usuarioEncontrado = await usuarios.findOne({"username": username})
+        usuarioEncontrado = await usuarios.findOne({ username: { $regex: username, $options: 'i' } })
     } else {
-        usuarioEncontrado = await usuarios.findOne({"email": email})
+        usuarioEncontrado = await usuarios.findOne({ email: { $regex: email, $options: 'i' } })
     }
     return usuarioEncontrado
 };
