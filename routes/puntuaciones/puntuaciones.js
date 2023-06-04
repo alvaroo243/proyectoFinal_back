@@ -2,6 +2,7 @@ const { actualizarPuntuacionTresEnRaya, getPuntuacionesTresEnRaya, getPuntuacion
 
 module.exports = (fastify) => {
 
+    // Ruta para actualizar puntuaciones del tresEnRaya
     fastify.route({
         url: "/puntuaciones/tresEnRaya",
         method: "POST",
@@ -17,6 +18,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para coger las puntuaciones dell tresEnRaya
     fastify.route({
         url:"/puntuaciones/getTresEnRaya",
         method: "POST",
@@ -32,6 +34,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para coger las puntuaciones del usuario indicado
     fastify.route({
         url:"/puntuaciones",
         method: "POST",
@@ -45,6 +48,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para coger los beneficios del usuario en el blackJack
     fastify.route({
         url: "/puntuaciones/blackJack",
         method: "GET",
@@ -61,6 +65,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para actualizar los beneficios en el blackJack
     fastify.route({
         url: "/puntuaciones/blackJack",
         method: "POST",
@@ -77,6 +82,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para coger las puntuaciones en el blackJack
     fastify.route({
         url: "/puntuaciones/blackJack/todas",
         method: "POST",

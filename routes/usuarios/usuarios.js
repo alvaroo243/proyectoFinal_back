@@ -2,6 +2,7 @@ const { getUsuarios, getEmail, eliminarUsuario, getUsuariosBusqueda, editarUsuar
 
 module.exports = (fastify) => {
 
+    // Ruta para coger la lista de los usuarios registrados
     fastify.route({
         url: "/usuarios",
         method: "POST",
@@ -18,6 +19,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para coger los emails de los usuarios
     fastify.route({
         url: "/usuarios/email",
         method: "POST",
@@ -32,11 +34,13 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para eliminar el usuario indicado por parametros
     fastify.route({
         url: "/usuarios/eliminar/:id",
         method: "DELETE",
         preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
+            // Cogemos el id pasado por parametro en la url
             const {id} = req.params
 
             const {ok} = await eliminarUsuario({id})
@@ -47,6 +51,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para hacer una busqueda de usuarios
     fastify.route({
         url: "/usuarios/busqueda",
         method: "POST",
@@ -62,6 +67,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para editar usuario
     fastify.route({
         url: "/usuarios/editar",
         method: "PUT",
@@ -77,6 +83,7 @@ module.exports = (fastify) => {
         }
     })
 
+    // Ruta para validar si hay usuario o no
     fastify.route({
         url: "/usuarios/validar",
         method: "POST",

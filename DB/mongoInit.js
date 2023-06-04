@@ -23,6 +23,7 @@ module.exports.mongoInit = async () => {
 			console.log("		🟢 MongoDB");
 			console.log( "" );
 
+			// Creamos una variable global
 			global.mongo = {
 				conexion: conexion,
 				ObjectId: ObjectId,

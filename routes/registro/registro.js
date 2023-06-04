@@ -2,6 +2,7 @@ const { hacerRegistro } = require("../../controllers/registro/registro")
 
 module.exports = (fastify) => {
 
+    // Ruta para hacer el registro del usuario
     fastify.route({
         url: "/registro",
         method: "POST",
