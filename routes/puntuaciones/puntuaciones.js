@@ -25,11 +25,12 @@ module.exports = (fastify) => {
         preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
             const {filtros, paginacion} = req.body
-            const {ok, list} = await getPuntuacionesTresEnRaya({filtros, paginacion})
+            const {ok, list, total} = await getPuntuacionesTresEnRaya({filtros, paginacion})
 
             return res.code(200).send({
                 ok: ok,
-                list: list
+                list: list,
+                total: total
             })
         }
     })
@@ -90,11 +91,12 @@ module.exports = (fastify) => {
         handler: async (req, res) => {
             const {filtros, paginacion} = req.body;
 
-            const {ok, list} = await getPuntuacionesBlacJack({filtros, paginacion})
+            const {ok, list, total} = await getPuntuacionesBlacJack({filtros, paginacion})
             
             return res.code(200).send({
                 ok: ok,
-                list: list
+                list: list,
+                total: total
             })
         }
     })

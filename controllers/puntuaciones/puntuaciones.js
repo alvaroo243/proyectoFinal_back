@@ -61,9 +61,11 @@ const getPuntuacionesTresEnRaya = async ({
         .sort(sort)
         .toArray()
 
+    const total = await puntuaciones.countDocuments({"tresEnRaya": {$exists: true}})
     return {
         ok: true,
-        list: jugadoresConPuntuaciones
+        list: jugadoresConPuntuaciones,
+        total: total
     }
 };
 exports.getPuntuacionesTresEnRaya = getPuntuacionesTresEnRaya;
@@ -161,10 +163,11 @@ const getPuntuacionesBlacJack = async ({
         .limit(limit)
         .sort(sort)
         .toArray()
-
+    const total = await puntuaciones.countDocuments({"blackJack": { $exists: true } })
     return {
         ok: true,
-        list: list
+        list: list,
+        total: total
     }
 }
 exports.getPuntuacionesBlacJack = getPuntuacionesBlacJack;

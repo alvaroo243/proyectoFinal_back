@@ -86,9 +86,11 @@ const getUsuariosBusqueda = async ({
         .limit(limit)
         .sort(sort)
         .toArray()
+    const total = await usuarios.countDocuments({...filtros})
     return {
         ok: true,
-        list: list
+        list: list,
+        total: total
     }
 };
 exports.getUsuariosBusqueda = getUsuariosBusqueda;
