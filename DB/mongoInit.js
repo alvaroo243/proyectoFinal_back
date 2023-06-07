@@ -31,25 +31,38 @@ module.exports.mongoInit = async () => {
 			}
 		};
 
-		// Cogemos un array con las collection de la db
-		const collections = await minijuegos.collections() 
+		// Cogemos un array con los nombres de las collection de la db
+		const coleccionesCreadas = (await minijuegos.listCollections().toArray()).map(coleccion => coleccion.name);
 
-		// Si no hay ninguna collection le añadimos las por defecto
-		if (collections.length === 0) {
-			// Creamos las collections que tendra la db
-			minijuegos.createCollection('puntuaciones')
-			const usuarios = minijuegos.collection('usuarios')
-			// Añadimos valores por defecto de las collections
-			await usuarios.insertOne({
-				name: "Admin", 
-				username: "admin", 
-				email: "admin@gmail.com", 
-				password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K", // Contraseña de admin es admin
-				creado: NaN,
-				role: "ADMIN",
-				biografia: "Soy el admin"
-			}) 
+		// Si falta alguna collection comprobamos cual es y la creamos
+		if (coleccionesCreadas.length < 2) {
+			// Si no existe puntuaciones la creamos
+			if (!coleccionesCreadas.includes('puntuaciones')) {
+				minijuegos.createCollection('puntuaciones')
+			}
+			// Si no existe usuarios la creamos
+			if (!coleccionesCreadas.includes('usuarios')) {
+				minijuegos.createCollection('usuarios')
+			}
 		}
+		// Cogemos la tabla usuarios por si falta el admin
+		const usuarios = minijuegos.collection('usuarios')
+		// Cogemos el usuario admin
+		const admin = await usuarios.findOne({username: "admin"});
+		// Si existe no hacemos nada
+		if (admin) {
+			return
+		}
+		// Si no existe creamos el usuario admin para que esté por defecto siempre
+		await usuarios.insertOne({
+			name: "Admin", 
+			username: "admin", 
+			email: "admin@gmail.com", 
+			password: "$2a$10$2GlBwygSyRUm/jYvZ33IRugQyCm0HYQ1wHhsF88/4Cw8lD/6ECc1K", // Contraseña de admin es admin
+			creado: NaN,
+			role: "ADMIN",
+			biografia: "Soy el admin"
+		})
 	} catch (err) {
 		console.log( err );
 		console.log("		🔴 MongoDB error");

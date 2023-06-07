@@ -1,8 +1,10 @@
 const { ObjectId } = require("mongodb");
 const { generaPaginacion } = require("../../utils/generador");
+const { getPuntuacionesJugador } = require("../puntuaciones/puntuaciones");
 
 // Cogemos la colección usuarios
 const usuarios = global.mongo.minijuegos.collection('usuarios');
+const puntuaciones = global.mongo.minijuegos.collection('puntuaciones')
 
 // Orden por defecto para la tabla de usuarios
 const defaultOrden = {
@@ -70,7 +72,7 @@ const eliminarUsuario = async ({
 exports.eliminarUsuario = eliminarUsuario;
 
 // Función que devuelve la busqueda de los usuarios indicados en el campo, en esta llamada se devolverá
-// los que contengan los parametros pasados en los filtros(por ejemoplo, buscamos el usuario alvaro y ponemos al y lo encuentra)
+// los que contengan los parametros pasados en los filtros(por ejemplo, buscamos el usuario alvaro y ponemos al y lo encuentra)
 const getUsuariosBusqueda = async ({
     filtros,
     paginacion
@@ -94,7 +96,8 @@ exports.getUsuariosBusqueda = getUsuariosBusqueda;
 // Función para editar usuarios
 const editarUsuario = async ({
     usuarioEditado,
-    res
+    res, 
+    usernameActual
 }) => {
     // Cogemos el _id del usuarioEditado
     const { _id } = usuarioEditado
@@ -113,6 +116,17 @@ const editarUsuario = async ({
     // Editamos el usuario
     const editar = await usuarios
     .updateOne({_id: new ObjectId(_id)}, {$set: {...usuarioEditado}})
+    // Si se ha cambiado el username
+    if (usernameActual !== usuarioEditado.username) {
+        // Miramos si el usuario tiene puntuaciones
+        const puntuacionesUsuario = await getPuntuacionesJugador({username: usernameActual});
+        // Si tiene
+        if (puntuacionesUsuario) {
+            // Actualizamos el username de las puntuaciones
+            puntuaciones
+            .updateOne({username: usernameActual}, {$set: {username: usuarioEditado.username}})
+        }
+    }
 
     if (!editar) return {ok: false}
 

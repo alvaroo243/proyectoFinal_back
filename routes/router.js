@@ -12,7 +12,7 @@ module.exports = async (fastify, options) => {
 	// Por si necesita cargar ficheros
 	fastify.register(require("@fastify/multipart"), { attachFieldsToBody: true });
 
-	// Se utilizará para la autenticación y la obtención del usuario
+	// Se utilizará para la autenticación del usuario
 	fastify.decorate("checkJwt", async function (req, rep) {
 		try {
 		req.user = await req.jwtVerify();

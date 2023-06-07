@@ -74,7 +74,8 @@ module.exports = (fastify) => {
         preValidation: [fastify.checkJwt],
         handler: async (req, res) => {
             const {usuarioEditado} = req.body;
-            const {ok, token} = await editarUsuario({usuarioEditado, res})
+            const {username: usernameActual} = req.user
+            const {ok, token} = await editarUsuario({usuarioEditado, res, usernameActual})
 
             res.code(200).send({
                 ok: ok,

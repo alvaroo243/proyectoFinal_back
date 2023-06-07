@@ -46,4 +46,3 @@ const crearUsuario = async ({
 
     return acknowledged
 };
-exports.crearUsuario = crearUsuario;
